@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="UVa\11983.cpp">
+    <ClCompile Include="contest\2017 Multi-University Training Contest\3_5.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
