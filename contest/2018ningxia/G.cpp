@@ -1,0 +1,129 @@
+    #include<iostream>
+    #include<cstdio>
+    #include<string>
+    #include<cstring>
+    #include<cstdlib>
+    #include<sstream>
+    #include<fstream>
+    #include<vector>
+    #include<list>
+    #include<deque>
+    #include<stack>
+    #include<queue>
+    #include<map>
+    #include<set>
+    #include<cmath>
+    #include<utility>
+    #include<numeric>
+    #include<iterator>
+    #include<algorithm>
+    #include<functional>
+    #include<ctime>
+    #include<cassert>
+    using std::cin;
+    using std::cout;
+    using std::endl;
+    typedef long long ll;
+    typedef unsigned long long ull;
+    typedef std::pair<ll,int> P;
+    #define FOR(i,init,len) for(int i=(init);i<(len);++i)
+    #define For(i,init,len) for(int i=(init);i<=(len);++i)
+    #define fi first
+    #define se second
+    #define pb push_back
+    #define is insert
+    namespace IO {
+        inline char getchar() {
+            static const int BUFSIZE=5201314;
+            static char buf[BUFSIZE],*begin,*end;
+            if(begin==end) {
+                begin=buf;
+                end=buf+fread(buf,1,BUFSIZE,stdin);
+                if(begin==end) return -1;
+            }
+            return *begin++;
+        }
+    }
+    inline void read(int &in) {
+        int c,symbol=1;
+        while(isspace(c=IO::getchar()));
+        if(c=='-') { in=0;symbol=-1; }
+        else in=c-'0';
+        while(isdigit(c=IO::getchar())) { in*=10;in+=c-'0'; }
+        in*=symbol;
+    }
+    inline int read() { static int x;read(x);return x; }
+    ll gcd(ll a,ll b) { return b?gcd(b,a%b):a; }
+    ll lcm(ll a,ll b) { return a/gcd(a,b)*b; }
+    #define PA(name,init,len) cout<<#name"["<<(len-init)<<"]=";FOR(_,init,len) cout<<name[_]<<" \n"[_==(len-1)];
+    #define Pa(name,init,len) cout<<#name"["<<(len-init+1)<<"]=";For(_,init,len) cout<<name[_]<<" \n"[_==(len)];
+    #define PV(name) cout<<#name"="<<name<<'\n';
+
+    const int maxn=1e5+10;
+    int n,q;
+    ll to[maxn],nxt[maxn];
+    struct Lan{
+        ll a,b;
+        Lan(ll a,ll b):a(a),b(b){}
+        Lan():Lan(0,0){}
+        bool operator<(const Lan &rhs)const{return b<rhs.b||b==rhs.b&&a<rhs.a;}
+    };
+    std::vector<Lan> in;
+    ll ans[maxn];
+
+    int main() {
+    #ifdef MengLan
+        int Beginning=clock();
+        //freopen("in","r",stdin);
+        //freopen("out","w",stdout);
+    #endif // MengLan
+
+        int T;scanf("%d",&T);
+        while(T--){
+            scanf("%d%d",&n,&q);
+            For(i,2,n) scanf("%d",to+i);
+            FOR(i,2,n) scanf("%d",nxt+i);
+            nxt[n]=0;
+            for(int i=n-1;i>=2;--i) nxt[i]+=nxt[i+1];
+            in.clear();
+            For(i,2,n) in.pb(Lan(n-i+1,to[i]+nxt[i]));
+            std::sort(in.begin(),in.end());
+            {
+                std::vector<Lan> t;
+                t.pb(in.front());
+                FOR(i,1,in.size()){
+                    while(t.size()>1){
+                        int j=t.size()-2,k=t.size()-1;
+                        double x1=(1.0*t[j].b-t[k].b)/(t[k].a-t[j].a);
+                        double x2=(1.0*t[k].b-in[i].b)/(in[i].a-t[k].a);
+                        if(x1>=x2) t.pop_back();
+                        else break;
+                    }
+                    if(in[i].b>t.back().b&&in[i].a<t.back().a)t.pb(in[i]);
+                }
+                in=t;
+            }
+            std::vector<P> qs;
+            FOR(i,0,q){
+                int x;scanf("%d",&x);
+                qs.pb(P(x,i));
+            }
+            std::sort(qs.begin(),qs.end());
+            int b=0;
+            FOR(i,0,q){
+                while(b+1<in.size()){
+                    double x=(1.0*in[b+1].b-in[b].b)/(in[b].a-in[b+1].a);
+                    if(qs[i].fi>=x) ++b;
+                    else break;
+                }
+                ans[qs[i].se]=in[b].a*qs[i].fi+in[b].b;
+            }
+            FOR(i,0,q) printf("%lld%c",ans[i],i!=q-1?' ':'\n');
+        }
+
+    #ifdef MengLan
+        printf("Time: %d\n",clock()-Beginning);
+        system("pause");
+    #endif // MengLan
+        return 0;
+    }

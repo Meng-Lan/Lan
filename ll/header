@@ -1,0 +1,25 @@
+#include <sys/socket.h>
+socket
+
+
+#include <sys/epoll.h>
+ epoll_event
+
+EPOLLIN=1
+EPOLLOUT=4
+EPOLLRDHUP=8192
+EPOLLPRI=2
+EPOLLERR=8
+EPOLLHUP=16
+EPOLLET=2147483648
+EPOLLONESHOT=1073741824
+EPOLLWAKEUP=536870912
+EPOLLEXCLUSIVE=268435456
+
+1、listen fd，有新连接请求，触发EPOLLIN。
+2、对端发送普通数据，触发EPOLLIN。
+3、带外数据，只触发EPOLLPRI。
+4、对端正常关闭（程序里close()，shell下kill或ctr+c），触发EPOLLIN和EPOLLRDHUP，但是不触发EPOLLERR和EPOLLHUP。
+    关于这点，以前一直以为会触发EPOLLERR或者EPOLLHUP。
+    再man epoll_ctl看下后两个事件的说明，这两个应该是本端（server端）出错才触发的。
+5、对端异常断开连接（只测了拔网线），没触发任何事件。

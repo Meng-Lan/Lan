@@ -1,27 +1,67 @@
-#include<iostream>
-#include<cstdio>
-#include<cstdlib>
-#include<ctime>
-#include<algorithm>
-using namespace std;
+#include<bits/stdc++.h>
+using std::cin;
+using std::cout;
+using std::endl;
 typedef long long ll;
-#define rd rand()/RAND_MAX 
+typedef unsigned long long ull;
+typedef std::pair<int,int> P;
 #define FOR(i,init,len) for(int i=(init);i<(len);++i)
 #define For(i,init,len) for(int i=(init);i<=(len);++i)
-const int maxn = 5e3;
-const auto t = RAND_MAX >> 1;
-int sign() {
-	if (rand() >= t) return 1;
-	else return -1;
+#define fi first
+#define se second
+#define pb push_back
+#define is insert
+namespace IO {
+	inline char getchar() {
+		static const int BUFSIZE=5201314;
+		static char buf[BUFSIZE],*begin,*end;
+		if(begin==end) {
+			begin=buf;
+			end=buf+fread(buf,1,BUFSIZE,stdin);
+			if(begin==end) return -1;
+		}
+		return *begin++;
+	}
+}
+inline void read(int &in) {
+	int c,symbol=1;
+	while(isspace(c=IO::getchar()));
+	if(c=='-') { in=0;symbol=-1; }
+	else in=c-'0';
+	while(isdigit(c=IO::getchar())) { in*=10;in+=c-'0'; }
+	in*=symbol;
+}
+inline int read() { static int x;read(x);return x; }
+ll gcd(ll a,ll b) { return b?gcd(b,a%b):a; }
+ll lcm(ll a,ll b) { return a/gcd(a,b)*b; }
+#define PA(name,init,len) cout<<#name"["<<(len-init)<<"]=";FOR(_,init,len) cout<<name[_]<<" \n"[_==(len-1)];
+#define Pa(name,init,len) cout<<#name"["<<(len-init+1)<<"]=";For(_,init,len) cout<<name[_]<<" \n"[_==(len)];
+#define PV(name) cout<<#name"="<<name<<'\n';
+
+const int N=2e5;
+const int M=5e5;
+const int X=5e5;
+const int T=4;
+bool in[500100];
+
+char randchar(){
+	int r=rand()%10;
+	if(r<10) return r+'0';
 }
 
-int main() {
-	srand(time(NULL));
-	FOR(i, 0, 100) rd;
-	int n = 100 * rd + 1, m = 100 * rd + 1;
-	while (m > n) m = 100 * rd + 1;
-	printf("%d %d\n", n, m);
-	For(i, 1, n) printf("%d%c", 1000 * rd + 1, i == n ? '\n' : ' ');
 
+int main() {
+#ifdef MengLan
+	//int Beginning=clock();
+	//freopen("in","r",stdin);
+	// freopen("recall10.in","w",stdout);
+#endif // MengLan
+
+
+
+#ifdef MengLan
+	//printf("Time: %d\n",clock()-Beginning);
+    system("pause");
+#endif // MengLan
 	return 0;
 }
